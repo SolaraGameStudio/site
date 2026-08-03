@@ -5,179 +5,36 @@
 <title>Solara Studio Games</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-body {
-  margin: 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  background: #050814;
-  color: #f5f5f5;
-}
-header {
-  padding: 1.5rem 2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: linear-gradient(90deg, #111827, #1f2937);
-  border-bottom: 1px solid #1f2937;
-}
-header h1 {
-  margin: 0;
-  font-size: 1.4rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-header span {
-  font-size: 0.9rem;
-  color: #9ca3af;
-}
-.main {
-  padding: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-.section-title {
-  font-size: 1.2rem;
-  margin-bottom: 1rem;
-}
-.carousel {
-  position: relative;
-  overflow: hidden;
-}
-.carousel-track {
-  display: flex;
-  transition: transform 0.4s ease;
-  will-change: transform;
-}
-.game-card {
-  min-width: 100%;
-  box-sizing: border-box;
-  padding: 1.5rem;
-  display: grid;
-  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
-  gap: 1.5rem;
-  background: radial-gradient(circle at top left, #1f2937 0, #020617 55%);
-  border-radius: 1rem;
-  border: 1px solid #1f2937;
-}
-.game-media {
-  position: relative;
-  border-radius: 0.75rem;
-  overflow: hidden;
-  background: #020617;
-}
-.game-media img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-.game-media a {
-  position: absolute;
-  bottom: 0.75rem;
-  right: 0.75rem;
-  padding: 0.4rem 0.7rem;
-  font-size: 0.75rem;
-  border-radius: 999px;
-  background: rgba(15, 23, 42, 0.85);
-  color: #e5e7eb;
-  text-decoration: none;
-}
-.game-content h2 {
-  margin: 0 0 0.5rem;
-  font-size: 1.3rem;
-}
-.game-content p {
-  margin: 0 0 0.75rem;
-  font-size: 0.95rem;
-  color: #d1d5db;
-}
-.tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-  margin-bottom: 1rem;
-}
-.tag {
-  padding: 0.25rem 0.6rem;
-  border-radius: 999px;
-  font-size: 0.75rem;
-  background: rgba(55, 65, 81, 0.7);
-  color: #e5e7eb;
-}
-.actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.6rem;
-}
-.button-primary {
-  padding: 0.6rem 1.1rem;
-  border-radius: 999px;
-  border: none;
-  cursor: pointer;
-  font-size: 0.9rem;
-  background: linear-gradient(135deg, #22c55e, #0ea5e9);
-  color: #020617;
-}
-.button-secondary {
-  padding: 0.6rem 1.1rem;
-  border-radius: 999px;
-  border: 1px solid #4b5563;
-  cursor: pointer;
-  font-size: 0.9rem;
-  background: #020617;
-  color: #e5e7eb;
-}
-.button-link {
-  padding: 0.4rem 0.8rem;
-  border-radius: 999px;
-  border: none;
-  cursor: pointer;
-  font-size: 0.8rem;
-  background: #111827;
-  color: #9ca3af;
-}
-.carousel-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 1rem;
-}
-.nav-buttons {
-  display: flex;
-  gap: 0.5rem;
-}
-.nav-button {
-  width: 2.2rem;
-  height: 2.2rem;
-  border-radius: 999px;
-  border: 1px solid #4b5563;
-  background: #020617;
-  color: #e5e7eb;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.nav-indicators {
-  display: flex;
-  gap: 0.4rem;
-}
-.indicator {
-  width: 0.5rem;
-  height: 0.5rem;
-  border-radius: 999px;
-  background: #1f2937;
-}
-.indicator.active {
-  background: #22c55e;
-}
-@media (max-width: 768px) {
-  .main {
-    padding: 1.25rem;
-  }
-  .game-card {
-    grid-template-columns: minmax(0, 1fr);
-  }
-}
+body{margin:0;font-family:system-ui;background:#050814;color:#f5f5f5}
+header{padding:1.5rem 2rem;display:flex;justify-content:space-between;align-items:center;background:#111827;border-bottom:1px solid #1f2937}
+header h1{margin:0;font-size:1.4rem;letter-spacing:.08em;text-transform:uppercase}
+header span{font-size:.9rem;color:#9ca3af}
+.main{padding:2rem;max-width:1200px;margin:0 auto}
+.section-title{font-size:1.2rem;margin-bottom:1rem}
+.carousel{position:relative;overflow:hidden}
+.carousel-track{display:flex;transition:transform .4s ease}
+.game-card{min-width:100%;box-sizing:border-box;padding:1.5rem;display:grid;grid-template-columns:minmax(0,2fr) minmax(0,3fr);gap:1.5rem;background:#1f2937;border-radius:1rem;border:1px solid #1f2937}
+.game-media{position:relative;border-radius:.75rem;overflow:hidden;background:#020617}
+.game-media img{width:100%;height:100%;object-fit:cover;display:block}
+.game-media button{position:absolute;bottom:.75rem;right:.75rem;padding:.4rem .7rem;font-size:.75rem;border-radius:999px;background:rgba(15,23,42,.85);color:#e5e7eb;border:none;cursor:pointer}
+.game-content h2{margin:0 0 .5rem;font-size:1.3rem}
+.game-content p{margin:0 0 .75rem;font-size:.95rem;color:#d1d5db}
+.tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1rem}
+.tag{padding:.25rem .6rem;border-radius:999px;font-size:.75rem;background:rgba(55,65,81,.7);color:#e5e7eb}
+.actions{display:flex;flex-wrap:wrap;gap:.6rem}
+.button-primary{padding:.6rem 1.1rem;border-radius:999px;border:none;cursor:pointer;font-size:.9rem;background:#22c55e;color:#020617}
+.button-secondary{padding:.6rem 1.1rem;border-radius:999px;border:1px solid #4b5563;cursor:pointer;font-size:.9rem;background:#020617;color:#e5e7eb}
+.button-link{padding:.4rem .8rem;border-radius:999px;border:none;cursor:pointer;font-size:.8rem;background:#111827;color:#9ca3af}
+.carousel-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1rem}
+.nav-buttons{display:flex;gap:.5rem}
+.nav-button{width:2.2rem;height:2.2rem;border-radius:999px;border:1px solid #4b5563;background:#020617;color:#e5e7eb;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.nav-indicators{display:flex;gap:.4rem}
+.indicator{width:.5rem;height:.5rem;border-radius:999px;background:#1f2937}
+.indicator.active{background:#22c55e}
+#galleryModal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.85);display:none;z-index:9999;backdrop-filter:blur(4px)}
+#galleryContent{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:90%;max-width:900px;height:70%;overflow-x:auto;white-space:nowrap;border-radius:12px;background:#111;padding:20px;box-sizing:border-box}
+#closeGallery{position:absolute;top:20px;right:20px;padding:10px 18px;border-radius:999px;border:none;background:#fff;color:#000;font-size:14px;cursor:pointer}
+@media(max-width:768px){.main{padding:1.25rem}.game-card{grid-template-columns:minmax(0,1fr)}}
 </style>
 </head>
 <body>
@@ -188,6 +45,7 @@ header span {
   </div>
   <span>GitHub Showcase</span>
 </header>
+
 <div class="main">
   <div class="section-title">Games</div>
   <div class="carousel" id="gameCarousel">
@@ -201,136 +59,133 @@ header span {
     </div>
   </div>
 </div>
+
+<div id="galleryModal">
+  <div id="galleryContent"></div>
+  <button id="closeGallery">Close</button>
+</div>
+
 <script>
-const games = [
+const games=[
   {
-    title: "Humain Tag",
-    description: "A fast-paced VR Gorilla Tag inspired locomotion game where you have fun with friends.",
-    image: "https://i.postimg.cc/8P14kFCp/Untitled-03-August-2026-at-14-20-19.png",
-    imageLink: "https://i.ibb.co/6Rx3sDYk/Untitled-03-August-2026-at-10-38-40.png",
-    tags: ["VR", "Quest", "Pico", "PCVR"],
-    sidequestUrl: "https://sidequestvr.com/app/61716/humain-tag",
-    steamUrl: "https://store.steampowered.com/app/",
-    metaUrl: "https://www.meta.com/experiences/"
+    title:"Humain Tag"
+    description:"Fun VR locomotion game.",
+    images:[
+      "https://i.ibb.co/Psj58Q0S/Untitled-03-August-2026-at-14-20-19.png",
+      "https://i.ibb.co/p6N8RLKT/Untitled-03-August-2026-at-13-55-06.png"
+      "https://i.ibb.co/6Rx3sDYk/Untitled-03-August-2026-at-10-38-40.png"
+    ],
+    tags:["VR","Quest","Pico","PCVR","Android"],
+    sidequestUrl:"https://sidequestvr.com/app/61716/humain-tag",
+    steamUrl:"https://sidequestvr.com/app/61716/humain-tag",
+    metaUrl:"https://sidequestvr.com/app/61716/humain-tag"
   }
-  
 ];
-const track = document.getElementById("carouselTrack");
-const indicatorsContainer = document.getElementById("navIndicators");
-let currentIndex = 0;
-function createGameCard(game, index) {
-  const card = document.createElement("article");
-  card.className = "game-card";
-  const media = document.createElement("div");
-  media.className = "game-media";
-  const img = document.createElement("img");
-  img.src = game.image;
-  img.alt = game.title;
-  const imgLink = document.createElement("a");
-  imgLink.href = game.imageLink;
-  imgLink.target = "_blank";
-  imgLink.rel = "noopener noreferrer";
-  imgLink.textContent = "View images";
-  media.appendChild(img);
-  media.appendChild(imgLink);
-  const content = document.createElement("div");
-  content.className = "game-content";
-  const title = document.createElement("h2");
-  title.textContent = game.title;
-  const desc = document.createElement("p");
-  desc.textContent = game.description;
-  const tags = document.createElement("div");
-  tags.className = "tags";
-  game.tags.forEach(t => {
-    const tag = document.createElement("span");
-    tag.className = "tag";
-    tag.textContent = t;
-    tags.appendChild(tag);
+
+function openGallery(imgs){
+  const modal=document.getElementById("galleryModal");
+  const content=document.getElementById("galleryContent");
+  content.innerHTML="";
+  imgs.forEach(url=>{
+    const img=document.createElement("img");
+    img.src=url;
+    img.style.height="100%";
+    img.style.marginRight="20px";
+    img.style.borderRadius="12px";
+    content.appendChild(img);
   });
-  const actions = document.createElement("div");
-  actions.className = "actions";
-  const downloadBtn = document.createElement("button");
-  downloadBtn.className = "button-primary";
-  downloadBtn.textContent = "Download via SideQuest";
-  downloadBtn.onclick = () => window.open(game.sidequestUrl, "_blank", "noopener");
-  const steamBtn = document.createElement("button");
-  steamBtn.className = "button-secondary";
-  steamBtn.textContent = "Steam listing";
-  steamBtn.onclick = () => window.open(game.steamUrl, "_blank", "noopener");
-  const metaBtn = document.createElement("button");
-  metaBtn.className = "button-secondary";
-  metaBtn.textContent = "Meta listing";
-  metaBtn.onclick = () => window.open(game.metaUrl, "_blank", "noopener");
-  const moreBtn = document.createElement("button");
-  moreBtn.className = "button-link";
-  moreBtn.textContent = "SideQuest details";
-  moreBtn.onclick = () => window.open(game.sidequestUrl, "_blank", "noopener");
-  actions.appendChild(downloadBtn);
-  actions.appendChild(steamBtn);
-  actions.appendChild(metaBtn);
-  actions.appendChild(moreBtn);
+  modal.style.display="block";
+}
+
+document.getElementById("closeGallery").onclick=()=>{
+  document.getElementById("galleryModal").style.display="none";
+};
+
+const track=document.getElementById("carouselTrack");
+const indicators=document.getElementById("navIndicators");
+let currentIndex=0;
+
+function createCard(game){
+  const card=document.createElement("article");
+  card.className="game-card";
+  const media=document.createElement("div");
+  media.className="game-media";
+  const img=document.createElement("img");
+  img.src=game.images[0];
+  const viewBtn=document.createElement("button");
+  viewBtn.textContent="View images";
+  viewBtn.onclick=()=>openGallery(game.images);
+  media.appendChild(img);
+  media.appendChild(viewBtn);
+  const content=document.createElement("div");
+  content.className="game-content";
+  const title=document.createElement("h2");
+  title.textContent=game.title;
+  const desc=document.createElement("p");
+  desc.textContent=game.description;
+  const tagBox=document.createElement("div");
+  tagBox.className="tags";
+  game.tags.forEach(t=>{
+    const tag=document.createElement("span");
+    tag.className="tag";
+    tag.textContent=t;
+    tagBox.appendChild(tag);
+  });
+  const actions=document.createElement("div");
+  actions.className="actions";
+  const dl=document.createElement("button");
+  dl.className="button-primary";
+  dl.textContent="Download via SideQuest";
+  dl.onclick=()=>window.open(game.sidequestUrl,"_blank");
+  const steam=document.createElement("button");
+  steam.className="button-secondary";
+  steam.textContent="Steam listing";
+  steam.onclick=()=>window.open(game.steamUrl,"_blank");
+  const meta=document.createElement("button");
+  meta.className="button-secondary";
+  meta.textContent="Meta listing";
+  meta.onclick=()=>window.open(game.metaUrl,"_blank");
+  actions.appendChild(dl);
+  actions.appendChild(steam);
+  actions.appendChild(meta);
   content.appendChild(title);
   content.appendChild(desc);
-  content.appendChild(tags);
+  content.appendChild(tagBox);
   content.appendChild(actions);
   card.appendChild(media);
   card.appendChild(content);
   return card;
 }
-function renderGames() {
-  track.innerHTML = "";
-  indicatorsContainer.innerHTML = "";
-  games.forEach((game, index) => {
-    const card = createGameCard(game, index);
-    track.appendChild(card);
-    const indicator = document.createElement("div");
-    indicator.className = "indicator" + (index === 0 ? " active" : "");
-    indicator.dataset.index = index;
-    indicator.onclick = () => goToSlide(index);
-    indicatorsContainer.appendChild(indicator);
+
+function render(){
+  track.innerHTML="";
+  indicators.innerHTML="";
+  games.forEach((g,i)=>{
+    track.appendChild(createCard(g));
+    const dot=document.createElement("div");
+    dot.className="indicator"+(i===0?" active":"");
+    dot.onclick=()=>goTo(i);
+    indicators.appendChild(dot);
   });
-  updateCarousel();
+  update();
 }
-function updateCarousel() {
-  const offset = -currentIndex * 100;
-  track.style.transform = "translateX(" + offset + "%)";
-  Array.from(indicatorsContainer.children).forEach((el, i) => {
-    el.classList.toggle("active", i === currentIndex);
-  });
+
+function update(){
+  track.style.transform="translateX(" + (-currentIndex*100) + "%)";
+  Array.from(indicators.children).forEach((el,i)=>el.classList.toggle("active",i===currentIndex));
 }
-function goToSlide(index) {
-  if (index < 0) index = games.length - 1;
-  if (index >= games.length) index = 0;
-  currentIndex = index;
-  updateCarousel();
+
+function goTo(i){
+  if(i<0)i=games.length-1;
+  if(i>=games.length)i=0;
+  currentIndex=i;
+  update();
 }
-document.getElementById("prevBtn").addEventListener("click", () => {
-  goToSlide(currentIndex - 1);
-});
-document.getElementById("nextBtn").addEventListener("click", () => {
-  goToSlide(currentIndex + 1);
-});
-let startX = 0;
-let isDragging = false;
-track.addEventListener("touchstart", e => {
-  if (!e.touches.length) return;
-  startX = e.touches[0].clientX;
-  isDragging = true;
-});
-track.addEventListener("touchmove", e => {
-  if (!isDragging || !e.touches.length) return;
-});
-track.addEventListener("touchend", e => {
-  if (!isDragging) return;
-  const endX = e.changedTouches[0].clientX;
-  const delta = endX - startX;
-  if (Math.abs(delta) > 50) {
-    if (delta < 0) goToSlide(currentIndex + 1);
-    else goToSlide(currentIndex - 1);
-  }
-  isDragging = false;
-});
-renderGames();
+
+document.getElementById("prevBtn").onclick=()=>goTo(currentIndex-1);
+document.getElementById("nextBtn").onclick=()=>goTo(currentIndex+1);
+
+render();
 </script>
 </body>
 </html>
