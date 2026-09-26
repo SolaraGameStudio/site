@@ -1,204 +1,478 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Solara Studio Games</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-body{margin:0;font-family:system-ui;background:#050814;color:#f5f5f5}
-header{padding:1.5rem 2rem;display:flex;justify-content:space-between;align-items:center;background:#111827;border-bottom:1px solid #1f2937}
-header h1{margin:0;font-size:1.4rem;letter-spacing:.08em;text-transform:uppercase}
-header span{font-size:.9rem;color:#9ca3af}
-.main{padding:2rem;max-width:1200px;margin:0 auto}
-.section-title{font-size:1.2rem;margin-bottom:1rem}
-.carousel{position:relative;overflow:hidden}
-.carousel-track{display:flex;transition:transform .4s ease}
-.game-card{min-width:100%;box-sizing:border-box;padding:1.5rem;display:grid;grid-template-columns:minmax(0,2fr) minmax(0,3fr);gap:1.5rem;background:#1f2937;border-radius:1rem;border:1px solid #1f2937}
-.game-media{position:relative;border-radius:.75rem;overflow:hidden;background:#020617}
-.game-media img{width:100%;height:100%;object-fit:cover;display:block}
-.game-media button{position:absolute;bottom:.75rem;right:.75rem;padding:.4rem .7rem;font-size:.75rem;border-radius:999px;background:rgba(15,23,42,.85);color:#e5e7eb;border:none;cursor:pointer}
-.game-content h2{margin:0 0 .5rem;font-size:1.3rem}
-.game-content p{margin:0 0 .75rem;font-size:.95rem;color:#d1d5db}
-.tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1rem}
-.tag{padding:.25rem .6rem;border-radius:999px;font-size:.75rem;background:rgba(55,65,81,.7);color:#e5e7eb}
-.actions{display:flex;flex-wrap:wrap;gap:.6rem}
-.button-primary{padding:.6rem 1.1rem;border-radius:999px;border:none;cursor:pointer;font-size:.9rem;background:#22c55e;color:#020617}
-.button-secondary{padding:.6rem 1.1rem;border-radius:999px;border:1px solid #4b5563;cursor:pointer;font-size:.9rem;background:#020617;color:#e5e7eb}
-.button-link{padding:.4rem .8rem;border-radius:999px;border:none;cursor:pointer;font-size:.8rem;background:#111827;color:#9ca3af}
-.carousel-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1rem}
-.nav-buttons{display:flex;gap:.5rem}
-.nav-button{width:2.2rem;height:2.2rem;border-radius:999px;border:1px solid #4b5563;background:#020617;color:#e5e7eb;cursor:pointer;display:flex;align-items:center;justify-content:center}
-.nav-indicators{display:flex;gap:.4rem}
-.indicator{width:.5rem;height:.5rem;border-radius:999px;background:#1f2937}
-.indicator.active{background:#22c55e}
-#galleryModal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.85);display:none;z-index:9999;backdrop-filter:blur(4px)}
-#galleryContent{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:90%;max-width:900px;height:70%;overflow-x:auto;white-space:nowrap;border-radius:12px;background:#111;padding:20px;box-sizing:border-box}
-#closeGallery{position:absolute;top:20px;right:20px;padding:10px 18px;border-radius:999px;border:none;background:#fff;color:#000;font-size:14px;cursor:pointer}
-@media(max-width:768px){.main{padding:1.25rem}.game-card{grid-template-columns:minmax(0,1fr)}}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS VR — Studio & Games</title>
+    <!-- Clean, modern typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #050505;
+            --surface-color: #0a0a0a;
+            --surface-hover: #121212;
+            --border-color: #222222;
+            --border-hover: #ffffff;
+            --text-main: #ffffff;
+            --text-muted: #888888;
+            --transition-smooth: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Pixelated background canvas */
+        #pixel-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            pointer-events: none;
+            opacity: 0.25;
+        }
+
+        /* Layout Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Header */
+        header {
+            padding: 3rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text-main);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 400;
+            letter-spacing: 0.05em;
+            transition: var(--transition-smooth);
+        }
+
+        .nav-links a:hover {
+            color: var(--text-main);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 8rem 0 5rem 0;
+            max-width: 800px;
+        }
+
+        .hero h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero p {
+            font-size: 1.125rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            font-weight: 300;
+            margin-bottom: 2.5rem;
+        }
+
+        /* Section Titles */
+        .section-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            margin-bottom: 3rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .section-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background-color: var(--border-color);
+        }
+
+        /* Games Grid */
+        .games-section {
+            padding: 4rem 0 8rem 0;
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .game-card {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            overflow: hidden;
+            transition: var(--transition-smooth);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .game-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-4px);
+        }
+
+        .game-thumbnail-wrapper {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            overflow: hidden;
+            background-color: #111;
+            position: relative;
+        }
+
+        .game-thumbnail {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(100%) contrast(110%);
+            transition: var(--transition-smooth);
+        }
+
+        .game-card:hover .game-thumbnail {
+            filter: grayscale(0%) contrast(100%);
+            transform: scale(1.03);
+        }
+
+        .game-info {
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .game-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.01em;
+        }
+
+        .game-desc {
+            color: var(--text-muted);
+            font-size: 0.9375rem;
+            line-height: 1.5;
+            margin-bottom: 2rem;
+            font-weight: 300;
+            flex-grow: 1;
+        }
+
+        /* Store Buttons Grid */
+        .store-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+        }
+
+        .store-btn {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 0.75rem 1rem;
+            border-radius: 2px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: var(--transition-smooth);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .store-icon {
+            width: 16px;
+            height: 16px;
+            object-fit: contain;
+            filter: brightness(0) invert(1); /* White for dark theme */
+            transition: var(--transition-smooth);
+            flex-shrink: 0;
+        }
+
+        /* Hover, Press, and Loading States */
+        .store-btn:hover {
+            background-color: var(--text-main);
+            color: var(--bg-color);
+            border-color: var(--text-main);
+        }
+
+        .store-btn:hover .store-icon {
+            filter: brightness(0); /* Black icon on white background hover */
+        }
+
+        .store-btn:active {
+            transform: scale(0.96);
+        }
+
+        .store-btn.loading {
+            pointer-events: none;
+            color: transparent !important;
+        }
+
+        .store-btn.loading .store-icon {
+            opacity: 0;
+        }
+
+        .store-btn.loading::after {
+            content: '';
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            border: 2px solid var(--text-main);
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--border-color);
+            padding: 3rem 0;
+            color: var(--text-muted);
+            font-size: 0.8125rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .hero { padding: 5rem 0 3rem 0; }
+            .games-grid { grid-template-columns: 1fr; }
+            footer { flex-direction: column; gap: 1rem; text-align: center; }
+        }
+    </style>
 </head>
 <body>
-<header>
-  <div>
-    <h1>Solara Studio</h1>
-    <span>VR & PC Experiences</span>
-  </div>
-  <span>Our Projects</span>
-</header>
 
-<div class="main">
-  <div class="section-title">Games</div>
-  <div class="carousel" id="gameCarousel">
-    <div class="carousel-track" id="carouselTrack"></div>
-    <div class="carousel-nav">
-      <div class="nav-buttons">
-        <button class="nav-button" id="prevBtn">&#8592;</button>
-        <button class="nav-button" id="nextBtn">&#8594;</button>
-      </div>
-      <div class="nav-indicators" id="navIndicators"></div>
+    <!-- Animated Pixelated Background Canvas -->
+    <canvas id="pixel-canvas"></canvas>
+
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <a href="#" class="logo">Nexus VR</a>
+            <ul class="nav-links">
+                <li><a href="#games">Games</a></li>
+                <li><a href="#studio">Studio</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1>Immersive virtual worlds, engineered cleanly.</h1>
+            <p>We craft high-performance, minimalist VR titles optimized for standalone and PCVR headsets worldwide.</p>
+        </section>
+
+        <!-- Games Showcase Section -->
+        <section id="games" class="games-section">
+            <h2 class="section-title">Featured Releases</h2>
+            
+            <div class="games-grid">
+                
+                <!-- Game 1 -->
+                <div class="game-card">
+                    <div class="game-thumbnail-wrapper">
+                        <img src="https://images.unsplash.com/photo-1592478411213-6153e4ebc07d?auto=format&fit=crop&w=800&q=80" alt="Void Runner VR Thumbnail" class="game-thumbnail">
+                    </div>
+                    <div class="game-info">
+                        <h3 class="game-title">Void Runner</h3>
+                        <p class="game-desc">A high-speed cybernetic arcade runner built exclusively for high-framerate immersive headsets.</p>
+                        
+                        <div class="store-buttons">
+                            <!-- Meta Quest Store -->
+                            <a href="https://www.meta.com" class="store-btn" target="_blank" rel="noopener">
+                                <img src="https://i.ibb.co/VY7C14Tx/image.png" alt="Meta Quest" class="store-icon">
+                                Quest
+                            </a>
+                            <!-- Steam Store -->
+                            <a href="https://store.steampowered.com" class="store-btn" target="_blank" rel="noopener">
+                                <img src="https://i.ibb.co/xtxGgsFY/image-2.png" alt="Steam" class="store-icon">
+                                Steam
+                            </a>
+                            <!-- Pico Store -->
+                            <a href="https://www.picoxr.com" class="store-btn" target="_blank" rel="noopener">
+                                <img src="https://i.ibb.co/ym76zj1m/image-3.png" alt="Pico" class="store-icon">
+                                Pico
+                            </a>
+                            <!-- SideQuest Store (Placeholder Cube Icon) -->
+                            <a href="https://sidequestvr.com" class="store-btn" target="_blank" rel="noopener">
+                                <svg class="store-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                                    <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                                    <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                                </svg>
+                                SideQuest
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Game 2 -->
+                <div class="game-card">
+                    <div class="game-thumbnail-wrapper">
+                        <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80" alt="Monolith VR Thumbnail" class="game-thumbnail">
+                    </div>
+                    <div class="game-info">
+                        <h3 class="game-title">Monolith</h3>
+                        <p class="game-desc">A physics-driven minimalist puzzle abstraction set inside an ancient, shifting architectural construct.</p>
+                        
+                        <div class="store-buttons">
+                            <!-- Meta Quest Store -->
+                            <a href="https://www.meta.com" class="store-btn" target="_blank" rel="noopener">
+                                <img src="https://i.ibb.co/VY7C14Tx/image.png" alt="Meta Quest" class="store-icon">
+                                Quest
+                            </a>
+                            <!-- Steam Store -->
+                            <a href="https://store.steampowered.com" class="store-btn" target="_blank" rel="noopener">
+                                <img src="https://i.ibb.co/xtxGgsFY/image-2.png" alt="Steam" class="store-icon">
+                                Steam
+                            </a>
+                            <!-- Pico Store -->
+                            <a href="https://www.picoxr.com" class="store-btn" target="_blank" rel="noopener">
+                                <img src="https://i.ibb.co/ym76zj1m/image-3.png" alt="Pico" class="store-icon">
+                                Pico
+                            </a>
+                            <!-- SideQuest Store (Placeholder Cube Icon) -->
+                            <a href="https://sidequestvr.com" class="store-btn" target="_blank" rel="noopener">
+                                <svg class="store-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                                    <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                                    <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                                </svg>
+                                SideQuest
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <p>&copy; 2026 Nexus VR Studio. All rights reserved.</p>
+            <p>Monochrome Spatial Systems</p>
+        </footer>
     </div>
-  </div>
-</div>
 
-<div id="galleryModal">
-  <div id="galleryContent"></div>
-  <button id="closeGallery">Close</button>
-</div>
+    <!-- Script for Animated Pixelated Background & Button Interactivity -->
+    <script>
+        // Pixelated Grid Background Animation
+        const canvas = document.getElementById('pixel-canvas');
+        const ctx = canvas.getContext('2d');
 
-<script>
-const games=[
-  {
-    title:"Humain Tag"
-    description:"Fun VR locomotion game.",
-    images:[
-      "https://i.ibb.co/Psj58Q0S/Untitled-03-August-2026-at-14-20-19.png",
-      "https://i.ibb.co/p6N8RLKT/Untitled-03-August-2026-at-13-55-06.png"
-      "https://i.ibb.co/6Rx3sDYk/Untitled-03-August-2026-at-10-38-40.png"
-    ],
-    tags:["VR","Quest","Pico","PCVR","Android"],
-    sidequestUrl:"https://sidequestvr.com/app/61716/humain-tag",
-    steamUrl:"https://sidequestvr.com/app/61716/humain-tag",
-    metaUrl:"https://sidequestvr.com/app/61716/humain-tag"
-  },
-  {
-    title:"Humain Tag"
-    description:"Fun VR locomotion game.",
-    images:[
-      "https://i.ibb.co/Psj58Q0S/Untitled-03-August-2026-at-14-20-19.png",
-      "https://i.ibb.co/p6N8RLKT/Untitled-03-August-2026-at-13-55-06.png"
-      "https://i.ibb.co/6Rx3sDYk/Untitled-03-August-2026-at-10-38-40.png"
-    ],
-    tags:["VR","Quest","Pico","PCVR","Android"],
-    sidequestUrl:"https://sidequestvr.com/app/61716/humain-tag",
-    steamUrl:"https://sidequestvr.com/app/61716/humain-tag",
-    metaUrl:"https://sidequestvr.com/app/61716/humain-tag"
-  }
-];
+        let width, height;
+        const tileSize = 32;
+        let cols, rows;
 
-function openGallery(imgs){
-  const modal=document.getElementById("galleryModal");
-  const content=document.getElementById("galleryContent");
-  content.innerHTML="";
-  imgs.forEach(url=>{
-    const img=document.createElement("img");
-    img.src=url;
-    img.style.height="100%";
-    img.style.marginRight="20px";
-    img.style.borderRadius="12px";
-    content.appendChild(img);
-  });
-  modal.style.display="block";
-}
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            cols = Math.floor(width / tileSize) + 1;
+            rows = Math.floor(height / tileSize) + 1;
+        }
 
-document.getElementById("closeGallery").onclick=()=>{
-  document.getElementById("galleryModal").style.display="none";
-};
+        window.addEventListener('resize', resize);
+        resize();
 
-const track=document.getElementById("carouselTrack");
-const indicators=document.getElementById("navIndicators");
-let currentIndex=0;
+        let step = 0;
+        function drawPixels() {
+            ctx.clearRect(0, 0, width, height);
+            step += 0.015;
 
-function createCard(game){
-  const card=document.createElement("article");
-  card.className="game-card";
-  const media=document.createElement("div");
-  media.className="game-media";
-  const img=document.createElement("img");
-  img.src=game.images[0];
-  const viewBtn=document.createElement("button");
-  viewBtn.textContent="View images";
-  viewBtn.onclick=()=>openGallery(game.images);
-  media.appendChild(img);
-  media.appendChild(viewBtn);
-  const content=document.createElement("div");
-  content.className="game-content";
-  const title=document.createElement("h2");
-  title.textContent=game.title;
-  const desc=document.createElement("p");
-  desc.textContent=game.description;
-  const tagBox=document.createElement("div");
-  tagBox.className="tags";
-  game.tags.forEach(t=>{
-    const tag=document.createElement("span");
-    tag.className="tag";
-    tag.textContent=t;
-    tagBox.appendChild(tag);
-  });
-  const actions=document.createElement("div");
-  actions.className="actions";
-  const dl=document.createElement("button");
-  dl.className="button-primary";
-  dl.textContent="Download via SideQuest";
-  dl.onclick=()=>window.open(game.sidequestUrl,"_blank");
-  const steam=document.createElement("button");
-  steam.className="button-secondary";
-  steam.textContent="Steam listing";
-  steam.onclick=()=>window.open(game.steamUrl,"_blank");
-  const meta=document.createElement("button");
-  meta.className="button-secondary";
-  meta.textContent="Meta listing";
-  meta.onclick=()=>window.open(game.metaUrl,"_blank");
-  actions.appendChild(dl);
-  actions.appendChild(steam);
-  actions.appendChild(meta);
-  content.appendChild(title);
-  content.appendChild(desc);
-  content.appendChild(tagBox);
-  content.appendChild(actions);
-  card.appendChild(media);
-  card.appendChild(content);
-  return card;
-}
+            for (let i = 0; i < cols; i++) {
+                let j = 0;
+                while (j < rows) {
+                    const noise = Math.sin(i * 0.3 + step) * Math.cos(j * 0.3 + step);
+                    if (noise > 0.65) {
+                        ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
+                        ctx.fillRect(i * tileSize, j * tileSize, tileSize - 2, tileSize - 2);
+                    }
+                    j++;
+                }
+            }
+            requestAnimationFrame(drawPixels);
+        }
+        drawPixels();
 
-function render(){
-  track.innerHTML="";
-  indicators.innerHTML="";
-  games.forEach((g,i)=>{
-    track.appendChild(createCard(g));
-    const dot=document.createElement("div");
-    dot.className="indicator"+(i===0?" active":"");
-    dot.onclick=()=>goTo(i);
-    indicators.appendChild(dot);
-  });
-  update();
-}
+        // Button Loading & Navigation Animation Handler
+        const storeButtons = document.querySelectorAll('.store-btn');
+        storeButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                if (this.classList.contains('loading')) return;
+                
+                e.preventDefault();
+                const targetUrl = this.getAttribute('href');
 
-function update(){
-  track.style.transform="translateX(" + (-currentIndex*100) + "%)";
-  Array.from(indicators.children).forEach((el,i)=>el.classList.toggle("active",i===currentIndex));
-}
+                // Trigger loading spinner micro-interaction
+                this.classList.add('loading');
 
-function goTo(i){
-  if(i<0)i=games.length-1;
-  if(i>=games.length)i=0;
-  currentIndex=i;
-  update();
-}
-
-document.getElementById("prevBtn").onclick=()=>goTo(currentIndex-1);
-document.getElementById("nextBtn").onclick=()=>goTo(currentIndex+1);
-
-render();
-</script>
+                // Simulate smooth transition delay before opening destination link
+                setTimeout(() => {
+                    window.open(targetUrl, '_blank');
+                    this.classList.remove('loading');
+                }, 600);
+            });
+        });
+    </script>
 </body>
 </html>
