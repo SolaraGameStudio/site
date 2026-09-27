@@ -671,9 +671,12 @@
     <!-- Animated Grid Background Canvas -->
     <canvas id="pixel-canvas"></canvas>
 
-    <!-- Clean UI Pop/Tap Sound Effect (Replaced trash sound) -->
+    <!-- Audio Elements for Tap (Click) and Hover -->
     <audio id="click-sound" preload="auto">
         <source src="https://cdn.freesound.org/previews/608/608621_11861866-lq.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="hover-sound" preload="auto">
+        <source src="https://cdn.freesound.org/previews/536/536108_11861866-lq.mp3" type="audio/mpeg">
     </audio>
 
     <div class="container">
@@ -885,15 +888,17 @@
         setTimeout(typeLoop, 600);
 
         // ==========================================
-        // SFX AUDIO CONTROLLER & CLICK-TO-ENTER
+        // SFX AUDIO CONTROLLER & HOVER / CLICK LOGIC
         // ==========================================
         const sfxSlider = document.getElementById('sfx-slider');
         const sfxIcon = document.getElementById('sfx-icon');
         const clickSound = document.getElementById('click-sound');
+        const hoverSound = document.getElementById('hover-sound');
         const splashScreen = document.getElementById('splash-screen');
         const enterBtn = document.getElementById('enter-btn');
 
         clickSound.volume = parseFloat(sfxSlider.value);
+        hoverSound.volume = parseFloat(sfxSlider.value) * 0.4; // Slightly quieter hover sound
 
         function updateIcons() {
             const sfxVal = parseFloat(sfxSlider.value);
@@ -909,36 +914,56 @@
             if (volume === 0) return;
             clickSound.volume = volume;
             clickSound.currentTime = 0;
-            clickSound.play().catch(e => console.log("Audio waiting for interaction policy."));
+            clickSound.play().catch(e => console.log(e));
+        }
+
+        function playHoverSound() {
+            const volume = parseFloat(sfxSlider.value);
+            if (volume === 0) return;
+            hoverSound.volume = volume * 0.4;
+            hoverSound.currentTime = 0;
+            hoverSound.play().catch(e => console.log(e));
         }
 
         sfxSlider.addEventListener('input', () => {
-            clickSound.volume = parseFloat(sfxSlider.value);
+            const currentVol = parseFloat(sfxSlider.value);
+            clickSound.volume = currentVol;
+            hoverSound.volume = currentVol * 0.4;
             updateIcons();
         });
 
-        // Trigger sample play when moving the slider so they hear it instantly
         sfxSlider.addEventListener('change', () => {
             playClickSound(); 
         });
 
         updateIcons();
 
-        // Handle Click To Enter Screen to unlock browser audio policy smoothly and play test sound
+        // Handle Click To Enter Screen to unlock browser audio policy
         enterBtn.addEventListener('click', () => {
             clickSound.play().then(() => {
                 clickSound.pause();
                 clickSound.currentTime = 0;
             }).catch(e => console.log(e));
 
+            hoverSound.play().then(() => {
+                hoverSound.pause();
+                hoverSound.currentTime = 0;
+            }).catch(e => console.log(e));
+
             playClickSound();
             splashScreen.classList.add('fade-out');
         });
 
-        // Bind click sound effects to interactive elements right away
-        const allInteractiveElements = document.querySelectorAll('.store-btn, .social-btn, .nav-links a, input[type="range"]');
+        // Bind hover and click sounds to all interactive elements
+        const allInteractiveElements = document.querySelectorAll('.store-btn, .social-btn, .nav-links a, input[type="range"], .enter-btn');
         
         allInteractiveElements.forEach(el => {
+            // Play sound on mouse enter (hover)
+            el.addEventListener('mouseenter', () => {
+                playHoverSound();
+            });
+
+            // Play sound on click
             el.addEventListener('click', function(e) {
                 playClickSound();
                 if (this.classList.contains('loading') || this.classList.contains('disabled')) return;
