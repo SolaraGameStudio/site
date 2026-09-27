@@ -202,7 +202,7 @@
             font-weight: 400;
             margin-bottom: 3rem;
             max-width: 650px;
-            min-height: 3.4em; /* Prevents layout shifting during typing */
+            min-height: 3.4em;
         }
 
         .typing-text {
@@ -528,7 +528,7 @@
                 <!-- Game: Humain Tag -->
                 <div class="game-card">
                     <div class="game-thumbnail-wrapper">
-                        <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80" alt="Humain Tag Thumbnail" class="game-thumbnail">
+                        <img src="https://ibb.co/nqrtZv4Z" alt="Humain Tag Thumbnail" class="game-thumbnail">
                     </div>
                     <div class="game-info">
                         <h3 class="game-title">Humain Tag</h3>
@@ -658,27 +658,25 @@
             if (isDeleting) {
                 typedTextElement.textContent = currentPhrase.substring(0, charIndex - 1);
                 charIndex--;
-                typingSpeed = 30; // Faster when deleting/untyping
+                typingSpeed = 30;
             } else {
                 typedTextElement.textContent = currentPhrase.substring(0, charIndex + 1);
                 charIndex++;
-                typingSpeed = 55; // Normal typing speed
+                typingSpeed = 55;
             }
 
             if (!isDeleting && charIndex === currentPhrase.length) {
-                // Pause at the end of typing a phrase
                 typingSpeed = 2200; 
                 isDeleting = true;
             } else if (isDeleting && charIndex === 0) {
                 isDeleting = false;
                 phraseIndex = (phraseIndex + 1) % phrases.length;
-                typingSpeed = 400; // Brief pause before starting next phrase
+                typingSpeed = 400;
             }
 
             setTimeout(typeLoop, typingSpeed);
         }
 
-        // Start typing animation after load
         setTimeout(typeLoop, 600);
 
         // Store & Social Button Click & Loading Animation Handler
