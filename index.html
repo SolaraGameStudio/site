@@ -373,8 +373,53 @@
             flex-shrink: 0;
         }
 
-        /* Hover & Active States (Inverted Solid White) */
-        .store-btn:hover, .social-btn:hover {
+        /* Disabled / Unavailable Store State */
+        .store-btn.disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+            background: rgba(255, 255, 255, 0.01);
+            border-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .store-btn.disabled:hover {
+            background: rgba(255, 255, 255, 0.01);
+            color: var(--text-main);
+            border-color: rgba(255, 255, 255, 0.05);
+            box-shadow: none;
+            transform: none;
+        }
+
+        .store-btn.disabled:hover .store-icon {
+            filter: brightness(0) invert(1);
+            transform: none;
+        }
+
+        /* Tooltip message on disabled buttons when hovered */
+        .store-btn.disabled::after {
+            content: 'UNAVAILABLE';
+            position: absolute;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            background: rgba(0, 0, 0, 0.9);
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            pointer-events: none;
+        }
+
+        .store-btn.disabled:hover::after {
+            opacity: 1;
+        }
+
+        /* Hover & Active States for Available Buttons */
+        .store-btn:not(.disabled):hover, .social-btn:hover {
             background: #ffffff;
             color: #000000;
             border-color: #ffffff;
@@ -382,7 +427,7 @@
             transform: translateY(-2px);
         }
 
-        .store-btn:hover .store-icon, 
+        .store-btn:not(.disabled):hover .store-icon, 
         .social-btn:hover .social-icon {
             filter: brightness(0);
             transform: scale(1.1);
@@ -520,7 +565,7 @@
         <!-- Games Showcase Section -->
         <section id="games" class="games-section">
             <div class="section-header">
-                <h2 class="section-title">01. Our Game</h2>
+                <h2 class="section-title">01. Our Games</h2>
                 <div class="section-line"></div>
             </div>
             
@@ -528,30 +573,34 @@
                 <!-- Game: Humain Tag -->
                 <div class="game-card">
                     <div class="game-thumbnail-wrapper">
-                        <img src="https://i.ibb.co/S7dnJGW6" alt="Humain Tag Thumbnail" class="game-thumbnail">
+                        <!-- Freeimage.host direct link -->
+                        <img src="https://iili.io/n53n38u.md.png" 
+                             alt="Humain Tag Thumbnail" 
+                             class="game-thumbnail" 
+                             referrerpolicy="no-referrer">
                     </div>
                     <div class="game-info">
                         <h3 class="game-title">Humain Tag</h3>
-                        <p class="game-desc">A high-energy virtual reality movement game built around pure momentum and chaotic tag matches. Jump in, track down friends or randoms, and try not to get caught.</p>
+                                    <p class="game-desc">A fun game to play and mees around your friends and the community, we have a high variety of gamemodes and listen to community ideas!</p>
                         
                         <div class="store-buttons">
-                            <!-- Meta Quest Store -->
-                            <a href="https://www.meta.com" class="store-btn" target="_blank" rel="noopener">
+                            <!-- Meta Quest Store (Temporarily Unavailable) -->
+                            <a href="#" class="store-btn disabled" aria-disabled="true">
                                 <img src="https://i.ibb.co/ym76zj1m/image-3.png" alt="Meta Quest" class="store-icon">
                                 <span class="btn-text">Quest Store</span>
                             </a>
-                            <!-- Steam Store -->
-                            <a href="https://store.steampowered.com" class="store-btn" target="_blank" rel="noopener">
+                            <!-- Steam Store (Temporarily Unavailable) -->
+                            <a href="#" class="store-btn disabled" aria-disabled="true">
                                 <img src="https://i.ibb.co/xtxGgsFY/image-2.png" alt="Steam" class="store-icon">
                                 <span class="btn-text">Steam VR</span>
                             </a>
-                            <!-- Pico Store -->
-                            <a href="https://www.picoxr.com" class="store-btn" target="_blank" rel="noopener">
+                            <!-- Pico Store (Temporarily Unavailable) -->
+                            <a href="#" class="store-btn disabled" aria-disabled="true">
                                 <img src="https://i.ibb.co/VY7C14Tx/image.png" alt="Pico" class="store-icon">
                                 <span class="btn-text">Pico Store</span>
                             </a>
-                            <!-- SideQuest Store -->
-                            <a href="https://sidequestvr.com" class="store-btn" target="_blank" rel="noopener">
+                            <!-- SideQuest Store (Active Link) -->
+                            <a href="https://sidequestvr.com/app/61716/humain-tag" class="store-btn" target="_blank" rel="noopener">
                                 <svg class="store-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
                                     <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
@@ -679,8 +728,8 @@
 
         setTimeout(typeLoop, 600);
 
-        // Store & Social Button Click & Loading Animation Handler
-        const interactiveButtons = document.querySelectorAll('.store-btn, .social-btn');
+        // Store & Social Button Click & Loading Animation Handler (Skips Disabled Buttons)
+        const interactiveButtons = document.querySelectorAll('.store-btn:not(.disabled), .social-btn');
         interactiveButtons.forEach(button => {
             button.addEventListener('click', function(e) {
                 if (this.classList.contains('loading')) return;
