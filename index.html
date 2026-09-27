@@ -671,9 +671,9 @@
     <!-- Animated Grid Background Canvas -->
     <canvas id="pixel-canvas"></canvas>
 
-    <!-- SFX Audio Element Only -->
+    <!-- Clean UI Pop/Tap Sound Effect (Replaced trash sound) -->
     <audio id="click-sound" preload="auto">
-        <source src="https://github.com/SolaraGameStudio/site/raw/refs/heads/main/universfield-computer-mouse-click-352734.mp3" type="audio/mpeg">
+        <source src="https://cdn.freesound.org/previews/608/608621_11861866-lq.mp3" type="audio/mpeg">
     </audio>
 
     <div class="container">
@@ -917,15 +917,15 @@
             updateIcons();
         });
 
+        // Trigger sample play when moving the slider so they hear it instantly
         sfxSlider.addEventListener('change', () => {
             playClickSound(); 
         });
 
         updateIcons();
 
-        // Handle Click To Enter Screen to unlock browser audio policy smoothly
+        // Handle Click To Enter Screen to unlock browser audio policy smoothly and play test sound
         enterBtn.addEventListener('click', () => {
-            // Prime audio element
             clickSound.play().then(() => {
                 clickSound.pause();
                 clickSound.currentTime = 0;
@@ -935,7 +935,7 @@
             splashScreen.classList.add('fade-out');
         });
 
-        // Bind click sound effects to interactive elements
+        // Bind click sound effects to interactive elements right away
         const allInteractiveElements = document.querySelectorAll('.store-btn, .social-btn, .nav-links a, input[type="range"]');
         
         allInteractiveElements.forEach(el => {
