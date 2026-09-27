@@ -205,6 +205,7 @@
             border-radius: 2px;
             outline: none;
             transition: background 0.3s;
+            cursor: pointer;
         }
 
         input[type="range"]::-webkit-slider-thumb {
@@ -609,7 +610,7 @@
     <!-- Animated Grid Background Canvas -->
     <canvas id="pixel-canvas"></canvas>
 
-    <!-- Background Music Audio Element (HadADream.mp3 Linked) -->
+    <!-- Background Music Audio Element -->
     <audio id="bg-music" loop preload="auto">
         <source src="https://github.com/SolaraGameStudio/site/raw/refs/heads/main/HadADream.mp3" type="audio/mpeg">
     </audio>
@@ -835,7 +836,7 @@
         setTimeout(typeLoop, 600);
 
         // ==========================================
-        // AUDIO & PROCEDURAL SFX CONTROLLER
+        // AUDIO & PROCEDURAL SFX CONTROLLER FIX
         // ==========================================
         let audioCtx = null;
 
@@ -854,16 +855,13 @@
         const musicIcon = document.getElementById('music-icon');
         const bgMusic = document.getElementById('bg-music');
 
-        // Initialize music slider volume to audio element
+        // Initial setup
         bgMusic.volume = parseFloat(musicSlider.value);
 
-        // Update SVG icons dynamically based on volume level
         function updateIcons() {
             const sfxVal = parseFloat(sfxSlider.value);
             if (sfxVal === 0) {
                 sfxIcon.innerHTML = `<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line>`;
-            } else if (sfxVal < 0.5) {
-                sfxIcon.innerHTML = `<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07" stroke-dasharray="3 3"></path>`;
             } else {
                 sfxIcon.innerHTML = `<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>`;
             }
@@ -871,21 +869,12 @@
             const musicVal = parseFloat(musicSlider.value);
             if (musicVal === 0) {
                 musicIcon.innerHTML = `<path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle><line x1="2" y1="2" x2="22" y2="22"></line>`;
-            } else if (musicVal < 0.5) {
-                musicIcon.innerHTML = `<path d="M9 18V5l12-2v13" stroke-dasharray="3 3"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle>`;
             } else {
                 musicIcon.innerHTML = `<path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle>`;
             }
         }
 
-        sfxSlider.addEventListener('input', updateIcons);
-        musicSlider.addEventListener('input', () => {
-            bgMusic.volume = parseFloat(musicSlider.value);
-            updateIcons();
-        });
-        updateIcons();
-
-        // Procedural Audio Sound Effects (Hover & Press)
+        // Procedural Audio Sound Effects
         function playHoverSound() {
             initAudioContext();
             const volume = parseFloat(sfxSlider.value);
@@ -930,17 +919,29 @@
             osc.stop(audioCtx.currentTime + 0.08);
         }
 
-        // Auto-play background music on first interaction
-        let musicStarted = false;
+        // Slider listeners (listening to both input & change for maximum mobile/desktop compatibility)
+        sfxSlider.addEventListener('input', () => {
+            updateIcons();
+            playHoverSound();
+        });
+
+        musicSlider.addEventListener('input', () => {
+            bgMusic.volume = parseFloat(musicSlider.value);
+            updateIcons();
+        });
+
+        updateIcons();
+
+        // Unlock audio context and trigger background music on first page click anywhere
         document.body.addEventListener('pointerdown', () => {
-            if (!musicStarted) {
-                musicStarted = true;
-                bgMusic.play().catch(e => console.log("Audio play blocked or waiting on user prompt."));
+            initAudioContext();
+            if (bgMusic.paused) {
+                bgMusic.play().catch(e => console.log("Audio waiting on interaction constraint."));
             }
         }, { once: true });
 
-        // Bind hover and press sound effects to all interactive buttons & nav elements
-        const allInteractiveElements = document.querySelectorAll('.store-btn, .social-btn, .nav-links a');
+        // Bind hover and press sound effects to interactive elements
+        const allInteractiveElements = document.querySelectorAll('.store-btn, .social-btn, .nav-links a, input[type="range"]');
         
         allInteractiveElements.forEach(el => {
             el.addEventListener('mouseenter', playHoverSound);
@@ -960,8 +961,6 @@
                 }
             });
         });
-
-        sfxSlider.addEventListener('change', playPressSound);
     </script>
 </body>
 </html>
