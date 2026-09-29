@@ -428,6 +428,28 @@
             overflow: hidden;
             background-color: #0b0b0b;
             position: relative;
+            cursor: pointer;
+        }
+
+        .game-thumbnail-wrapper::after {
+            content: 'CLICK TO VIEW DETAILS & DEV LOG';
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.65);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .game-thumbnail-wrapper:hover::after {
+            opacity: 1;
         }
 
         .game-thumbnail {
@@ -447,11 +469,38 @@
             padding: 2.5rem;
         }
 
+        .game-title-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
         .game-title {
             font-size: 2rem;
             font-weight: 700;
-            margin-bottom: 0.75rem;
             letter-spacing: -0.02em;
+        }
+
+        .details-trigger-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--surface-border-glow);
+            color: var(--text-main);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .details-trigger-btn:hover {
+            background: #ffffff;
+            color: #000000;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
         }
 
         .game-desc {
@@ -623,6 +672,186 @@
             to { transform: rotate(360deg); }
         }
 
+        /* Game Details Modal / Overlay */
+        #game-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(15px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            padding: 2rem;
+        }
+
+        #game-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content-wrapper {
+            background: #0a0a0a;
+            border: 1px solid var(--surface-border-glow);
+            border-radius: 20px;
+            width: 100%;
+            max-width: 900px;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 25px 60px rgba(255, 255, 255, 0.1);
+            transform: translateY(20px);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        #game-modal.active .modal-content-wrapper {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            padding: 2rem;
+            border-bottom: 1px solid var(--surface-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            background: #0a0a0a;
+            z-index: 10;
+        }
+
+        .modal-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+        }
+
+        .modal-close-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--surface-border);
+            color: var(--text-main);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+            transition: var(--transition-smooth);
+        }
+
+        .modal-close-btn:hover {
+            background: #ffffff;
+            color: #000000;
+        }
+
+        .modal-body {
+            padding: 2.5rem;
+        }
+
+        .modal-section-heading {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            margin-top: 2rem;
+        }
+
+        .modal-section-heading:first-child {
+            margin-top: 0;
+        }
+
+        .modal-details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .detail-item {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--surface-border);
+            padding: 1rem;
+            border-radius: 12px;
+        }
+
+        .detail-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-bottom: 0.25rem;
+            text-transform: uppercase;
+        }
+
+        .detail-value {
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        /* Dev Log Timeline */
+        .devlog-timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            border-left: 1px solid var(--surface-border);
+            padding-left: 1.5rem;
+            margin-left: 0.5rem;
+        }
+
+        .devlog-entry {
+            position: relative;
+        }
+
+        .devlog-entry::before {
+            content: '';
+            position: absolute;
+            left: -1.78rem;
+            top: 0.4rem;
+            width: 8px;
+            height: 8px;
+            background: var(--text-main);
+            border-radius: 50%;
+            box-shadow: 0 0 8px #fff;
+        }
+
+        .devlog-date {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-bottom: 0.25rem;
+        }
+
+        .devlog-title {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 0.35rem;
+        }
+
+        .devlog-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .modal-store-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
         .socials-section {
             padding: 4rem 0 8rem 0;
         }
@@ -650,7 +879,7 @@
             header { flex-direction: column; gap: 1.5rem; padding: 1.5rem 0; }
             .nav-right { width: 100%; justify-content: space-between; flex-wrap: wrap; }
             .hero { padding: 5rem 0 3rem 0; }
-            .store-buttons, .socials-grid { grid-template-columns: 1fr; }
+            .store-buttons, .socials-grid, .modal-details-grid, .modal-store-grid { grid-template-columns: 1fr; }
             footer { flex-direction: column; gap: 1rem; text-align: center; }
         }
     </style>
@@ -729,14 +958,17 @@
             <div class="games-grid">
                 <!-- Game: Humain Tag -->
                 <div class="game-card">
-                    <div class="game-thumbnail-wrapper">
+                    <div class="game-thumbnail-wrapper" id="open-details-thumb">
                         <img src="https://iili.io/n53n38u.md.png" 
                              alt="Humain Tag Thumbnail" 
                              class="game-thumbnail" 
                              referrerpolicy="no-referrer">
                     </div>
                     <div class="game-info">
-                        <h3 class="game-title">Humain Tag</h3>
+                        <div class="game-title-row">
+                            <h3 class="game-title">Humain Tag</h3>
+                            <button class="details-trigger-btn" id="open-details-btn">// VIEW DETAILS</button>
+                        </div>
                         <p class="game-desc">A fun game to play and mess around your friends and the community, we have a high variety of gamemodes and listen to community ideas!</p>
                         
                         <div class="store-buttons">
@@ -805,6 +1037,59 @@
             <p>&copy; 2026 SOLARA GAME STUDIO.</p>
             <p>BUILDING IN VR.</p>
         </footer>
+    </div>
+
+    <!-- Humain Tag Details & Dev Log Modal -->
+    <div id="game-modal">
+        <div class="modal-content-wrapper">
+            <div class="modal-header">
+                <div class="modal-title">// HUMAIN TAG — SYSTEM INFO</div>
+                <button class="modal-close-btn" id="modal-close-btn">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-section-heading">// Game Specifications</div>
+                <div class="modal-details-grid">
+                    <div class="detail-item">
+                        <div class="detail-label">Genre</div>
+                        <div class="detail-value">Multiplayer VR Locomotion / Party</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Platform</div>
+                        <div class="detail-value">Standalone VR / PCVR / Web Sideload</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Developer</div>
+                        <div class="detail-value">Solara Game Studio</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Status</div>
+                        <div class="detail-value">Active Development & Community Updates</div>
+                    </div>
+                </div>
+
+                <div class="modal-section-heading">// Development Log (Dev Log)</div>
+                <div class="devlog-timeline">
+                    <div class="devlog-entry">
+                        <div class="devlog-date">ALPHA 1.025 // AUGUST 22ND, 2026</div>
+                        <div class="devlog-title">🌅 The Skybox Update</div>
+                        <div class="devlog-desc">Introduced custom pixelated skyboxes to enhance the retro-futuristic atmosphere across all active lobbies.</div>
+                    </div>
+                </div>
+
+                <div class="modal-section-heading">// Available Storefronts & Downloads</div>
+                <div class="modal-store-grid">
+                    <a href="https://sidequestvr.com/app/61716/humain-tag" class="store-btn" target="_blank" rel="noopener">
+                        <span class="btn-text">SideQuest</span>
+                    </a>
+                    <a href="https://github.com/SolaraGameStudio/humain-tag/releases" class="store-btn" target="_blank" rel="noopener">
+                        <span class="btn-text">GitHub</span>
+                    </a>
+                    <a href="https://solara-studio.itch.io/humain-tag" class="store-btn" target="_blank" rel="noopener">
+                        <span class="btn-text">Itch.io</span>
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Scripts -->
@@ -897,8 +1182,14 @@
         const splashScreen = document.getElementById('splash-screen');
         const enterBtn = document.getElementById('enter-btn');
 
+        // Modal Elements
+        const gameModal = document.getElementById('game-modal');
+        const openDetailsBtn = document.getElementById('open-details-btn');
+        const openDetailsThumb = document.getElementById('open-details-thumb');
+        const modalCloseBtn = document.getElementById('modal-close-btn');
+
         clickSound.volume = parseFloat(sfxSlider.value);
-        hoverSound.volume = parseFloat(sfxSlider.value) * 0.4; // Slightly quieter hover sound
+        hoverSound.volume = parseFloat(sfxSlider.value) * 0.4;
 
         function updateIcons() {
             const sfxVal = parseFloat(sfxSlider.value);
@@ -954,21 +1245,53 @@
             splashScreen.classList.add('fade-out');
         });
 
+        // Modal Open / Close Logic
+        function openModal(e) {
+            e.preventDefault();
+            playClickSound();
+            gameModal.classList.add('active');
+        }
+
+        function closeModal() {
+            playClickSound();
+            gameModal.classList.remove('active');
+        }
+
+        openDetailsBtn.addEventListener('click', openModal);
+        openDetailsThumb.addEventListener('click', openModal);
+        modalCloseBtn.addEventListener('click', closeModal);
+
+        // Close modal when clicking outside content wrapper
+        gameModal.addEventListener('click', (e) => {
+            if (e.target === gameModal) {
+                closeModal();
+            }
+        });
+
         // Bind hover and click sounds to all interactive elements
-        const allInteractiveElements = document.querySelectorAll('.store-btn, .social-btn, .nav-links a, input[type="range"], .enter-btn');
+        const allInteractiveElements = document.querySelectorAll('.store-btn, .social-btn, .nav-links a, input[type="range"], .enter-btn, .details-trigger-btn, .modal-close-btn');
         
         allInteractiveElements.forEach(el => {
-            // Play sound on mouse enter (hover)
             el.addEventListener('mouseenter', () => {
                 playHoverSound();
             });
 
-            // Play sound on click
             el.addEventListener('click', function(e) {
-                playClickSound();
+                if (!this.classList.contains('details-trigger-btn') && !this.classList.contains('modal-close-btn')) {
+                    playClickSound();
+                }
                 if (this.classList.contains('loading') || this.classList.contains('disabled')) return;
                 
-                if (this.classList.contains('store-btn') || this.classList.contains('social-btn')) {
+                if (this.classList.contains('store-btn') && this.getAttribute('href') !== '#') {
+                    e.preventDefault();
+                    const targetUrl = this.getAttribute('href');
+                    this.classList.add('loading');
+
+                    setTimeout(() => {
+                        window.open(targetUrl, '_blank');
+                        this.classList.remove('loading');
+                    }, 850);
+                } else if (this.classList.contains('social-btn')) {
                     e.preventDefault();
                     const targetUrl = this.getAttribute('href');
                     this.classList.add('loading');
