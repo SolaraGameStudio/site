@@ -888,7 +888,49 @@
 </head>
 <body>
 
-    <!-- Click To Enter Splash Screen (Fixes Audio Auto-play Block) -->
+    <!-- Easter Egg Route Script (Runs instantly to check URL path) -->
+    <script>
+        if (window.location.pathname === '/play' || window.location.pathname === '/play/') {
+            document.documentElement.innerHTML = `
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Easter egg</title>
+                    <style>
+                        body {
+                            margin: 0;
+                            background: #000;
+                            color: #fff;
+                            font-family: 'Plus Jakarta Sans', sans-serif;
+                            display: flex;
+                            flex-direction: column;
+                            height: 100vh;
+                        }
+                        h1 {
+                            text-align: center;
+                            margin: 1rem 0;
+                            font-size: 1.5rem;
+                            letter-spacing: 0.1em;
+                        }
+                        iframe {
+                            flex: 1;
+                            width: 100%;
+                            border: none;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <h1>Easter egg</h1>
+                    <iframe src="https://snake.io/" title="Snake.io"></iframe>
+                </body>
+                </html>
+            `;
+        }
+    </script>
+
+    <!-- Click To Enter Screen (Fixes Audio Auto-play Block) -->
     <div id="splash-screen">
         <div class="splash-logo">// SOLARA GAME STUDIO</div>
         <button class="enter-btn" id="enter-btn">Click To Enter</button>
